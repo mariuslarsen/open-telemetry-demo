@@ -11,6 +11,7 @@
     <modules>
         <module>data-provider</module>
         <module>pokemon-sightings</module>
+        <module>message-data-type</module>
     </modules>
 
     <properties>
