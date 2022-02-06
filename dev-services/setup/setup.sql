@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS pokemon_sighting(
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    location VARCHAR(50) NOT NULL,
+    sighted_at TIMESTAMP NOT NULL,
+    PRIMARY KEY(id)
+);
