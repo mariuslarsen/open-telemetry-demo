@@ -10,6 +10,7 @@
 
     <modules>
         <module>data-provider</module>
+        <module>pokemon-sightings</module>
     </modules>
 
     <properties>
