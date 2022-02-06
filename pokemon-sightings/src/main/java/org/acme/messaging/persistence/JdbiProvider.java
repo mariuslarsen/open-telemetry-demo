@@ -1,4 +1,4 @@
-package org.acme.messaging.persistence.dao;
+package org.acme.messaging.persistence;
 
 import io.opentelemetry.instrumentation.jdbc.datasource.OpenTelemetryDataSource;
 import org.jdbi.v3.core.Jdbi;

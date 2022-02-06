@@ -1,6 +1,7 @@
 package org.acme.messaging.persistence.dao;
 
 import open.telemetry.demo.PokemonSighting;
+import org.acme.messaging.persistence.JdbiProvider;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
