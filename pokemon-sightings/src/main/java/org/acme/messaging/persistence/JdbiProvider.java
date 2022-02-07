@@ -5,19 +5,17 @@ import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Dependent;
 import javax.sql.DataSource;
 
-@ApplicationScoped
+@Dependent
 public class JdbiProvider {
-    private final Jdbi jdbi;
 
-    public JdbiProvider(DataSource dataSource) {
-        jdbi = Jdbi.create(new OpenTelemetryDataSource(dataSource));
+    @ApplicationScoped
+    public Jdbi getJdbi(DataSource dataSource) {
+        final Jdbi jdbi = Jdbi.create(new OpenTelemetryDataSource(dataSource));
         jdbi.installPlugin(new SqlObjectPlugin());
         jdbi.registerRowMapper(new PokemonSightingRowMapper());
-    }
-
-    public Jdbi getJdbi() {
         return jdbi;
     }
 }

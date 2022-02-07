@@ -2,6 +2,7 @@ package org.acme.messaging.persistence.dao;
 
 import open.telemetry.demo.PokemonSighting;
 import org.acme.messaging.persistence.JdbiProvider;
+import org.jdbi.v3.core.Jdbi;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -29,6 +30,8 @@ public class PokemonSightingDbDao implements PokemonSightingDao {
             WHERE LOWER(name) = LOWER(:name)
             """;
 
+    @Inject Jdbi jdbi;
+
     @Inject
     JdbiProvider jdbiProvider;
 
@@ -37,7 +40,7 @@ public class PokemonSightingDbDao implements PokemonSightingDao {
         Instant instant = Instant.ofEpochSecond(pokemonSighting.getTimestamp().getSeconds(),
                 pokemonSighting.getTimestamp().getNanos());
 
-        jdbiProvider.getJdbi().useHandle(handle -> {
+        jdbi.useHandle(handle -> {
             handle.createUpdate(INSERT)
                     .bind("name", pokemonSighting.getName())
                     .bind("location", pokemonSighting.getLocation())
@@ -48,7 +51,7 @@ public class PokemonSightingDbDao implements PokemonSightingDao {
 
     @Override
     public Optional<PokemonSighting> getById(int id) {
-        return jdbiProvider.getJdbi().withHandle(handle ->
+        return jdbi.withHandle(handle ->
                 handle.createQuery(GET_BY_ID)
                         .bind("id", id)
                         .mapTo(PokemonSighting.class)
@@ -58,7 +61,7 @@ public class PokemonSightingDbDao implements PokemonSightingDao {
 
     @Override
     public Optional<PokemonSighting> getFirstByName(String name) {
-        return jdbiProvider.getJdbi().withHandle(handle ->
+        return jdbi.withHandle(handle ->
                 handle.createQuery(GET_BY_NAME)
                         .bind("name", name)
                         .mapTo(PokemonSighting.class)
@@ -68,7 +71,7 @@ public class PokemonSightingDbDao implements PokemonSightingDao {
 
     @Override
     public List<PokemonSighting> getAllByName(String name) {
-        return jdbiProvider.getJdbi().withHandle(handle ->
+        return jdbi.withHandle(handle ->
                 handle.createQuery(GET_BY_NAME)
                         .bind("name", name)
                         .mapTo(PokemonSighting.class)

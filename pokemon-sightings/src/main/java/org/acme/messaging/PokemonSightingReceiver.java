@@ -21,7 +21,7 @@ public class PokemonSightingReceiver {
     public CompletionStage<Void> logPokemonSightings(Message<PokemonSighting> message) {
         PokemonSighting pokemonSighting = message.getPayload();
         dao.insert(pokemonSighting);
-        LOG.infov("Pokemon sighting: {0}", pokemonSighting);
+        LOG.infov("Pokemon sighting:\n{0}", pokemonSighting);
         return message.ack();
     }
 }
