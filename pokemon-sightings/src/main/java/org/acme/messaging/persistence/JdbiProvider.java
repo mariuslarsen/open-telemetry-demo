@@ -14,6 +14,7 @@ public class JdbiProvider {
     public JdbiProvider(DataSource dataSource) {
         jdbi = Jdbi.create(new OpenTelemetryDataSource(dataSource));
         jdbi.installPlugin(new SqlObjectPlugin());
+        jdbi.registerRowMapper(new PokemonSightingRowMapper());
     }
 
     public Jdbi getJdbi() {

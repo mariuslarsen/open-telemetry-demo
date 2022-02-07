@@ -7,12 +7,26 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 public class PokemonSightingDbDao implements PokemonSightingDao {
-    private static final String insert = """
+    private static final String INSERT = """
             INSERT INTO pokemon_sighting (name, location, sighted_at)
             VALUES (:name, :location, :timestamp);
+            """;
+
+    private static final String GET_BY_ID = """
+            SELECT name, location, sighted_at
+            FROM pokemon_sighting
+            WHERE id = :id
+            """;
+
+    private static final String GET_BY_NAME = """
+            SELECT name, location, sighted_at
+            FROM pokemon_sighting
+            WHERE LOWER(name) = LOWER(:name)
             """;
 
     @Inject
@@ -24,11 +38,41 @@ public class PokemonSightingDbDao implements PokemonSightingDao {
                 pokemonSighting.getTimestamp().getNanos());
 
         jdbiProvider.getJdbi().useHandle(handle -> {
-            handle.createUpdate(insert)
+            handle.createUpdate(INSERT)
                     .bind("name", pokemonSighting.getName())
                     .bind("location", pokemonSighting.getLocation())
                     .bind("timestamp", Timestamp.from(instant))
                     .execute();
         });
+    }
+
+    @Override
+    public Optional<PokemonSighting> getById(int id) {
+        return jdbiProvider.getJdbi().withHandle(handle ->
+                handle.createQuery(GET_BY_ID)
+                        .bind("id", id)
+                        .mapTo(PokemonSighting.class)
+                        .findFirst()
+        );
+    }
+
+    @Override
+    public Optional<PokemonSighting> getFirstByName(String name) {
+        return jdbiProvider.getJdbi().withHandle(handle ->
+                handle.createQuery(GET_BY_NAME)
+                        .bind("name", name)
+                        .mapTo(PokemonSighting.class)
+                        .findFirst()
+        );
+    }
+
+    @Override
+    public List<PokemonSighting> getAllByName(String name) {
+        return jdbiProvider.getJdbi().withHandle(handle ->
+                handle.createQuery(GET_BY_NAME)
+                        .bind("name", name)
+                        .mapTo(PokemonSighting.class)
+                        .list()
+        );
     }
 }
