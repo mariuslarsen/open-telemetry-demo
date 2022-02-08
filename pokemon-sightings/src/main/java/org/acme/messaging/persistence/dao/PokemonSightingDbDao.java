@@ -1,13 +1,12 @@
 package org.acme.messaging.persistence.dao;
 
-import open.telemetry.demo.PokemonSighting;
+import message.PokemonSighting;
 import org.acme.messaging.persistence.JdbiProvider;
 import org.jdbi.v3.core.Jdbi;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,21 +29,19 @@ public class PokemonSightingDbDao implements PokemonSightingDao {
             WHERE LOWER(name) = LOWER(:name)
             """;
 
-    @Inject Jdbi jdbi;
+    @Inject
+    Jdbi jdbi;
 
     @Inject
     JdbiProvider jdbiProvider;
 
     @Override
     public void insert(PokemonSighting pokemonSighting) {
-        Instant instant = Instant.ofEpochSecond(pokemonSighting.getTimestamp().getSeconds(),
-                pokemonSighting.getTimestamp().getNanos());
-
         jdbi.useHandle(handle -> {
             handle.createUpdate(INSERT)
-                    .bind("name", pokemonSighting.getName())
-                    .bind("location", pokemonSighting.getLocation())
-                    .bind("timestamp", Timestamp.from(instant))
+                    .bind("name", pokemonSighting.name())
+                    .bind("location", pokemonSighting.location())
+                    .bind("timestamp", Timestamp.from(pokemonSighting.sightedAt()))
                     .execute();
         });
     }

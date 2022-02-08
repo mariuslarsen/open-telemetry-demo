@@ -1,6 +1,6 @@
 package org.acme.rest;
 
-import open.telemetry.demo.PokemonSighting;
+import message.PokemonSighting;
 import org.acme.messaging.persistence.dao.PokemonSightingDao;
 
 import javax.inject.Inject;
@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Path("pokemon-sightings")
+@Produces(MediaType.APPLICATION_JSON)
 public class PokemonSightingService {
 
     @Inject
@@ -20,14 +21,12 @@ public class PokemonSightingService {
 
     @GET
     @Path("id/{id}")
-    @Produces(MediaType.TEXT_PLAIN)
     public Optional<PokemonSighting> getById(@PathParam("id") int id) {
         return dao.getById(id);
     }
 
     @GET
     @Path("name/{name}")
-    @Produces(MediaType.TEXT_PLAIN)
     public List<PokemonSighting> getAllWithName(@PathParam("name") String name) {
         return dao.getAllByName(name);
     }

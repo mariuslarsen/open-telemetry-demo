@@ -1,6 +1,6 @@
 package org.acme.messaging;
 
-import open.telemetry.demo.PokemonSighting;
+import message.PokemonSighting;
 import org.acme.messaging.persistence.dao.PokemonSightingDao;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Message;
@@ -21,7 +21,7 @@ public class PokemonSightingReceiver {
     public CompletionStage<Void> logPokemonSightings(Message<PokemonSighting> message) {
         PokemonSighting pokemonSighting = message.getPayload();
         dao.insert(pokemonSighting);
-        LOG.infov("Pokemon sighting:\n{0}", pokemonSighting);
+        LOG.info(pokemonSighting);
         return message.ack();
     }
 }

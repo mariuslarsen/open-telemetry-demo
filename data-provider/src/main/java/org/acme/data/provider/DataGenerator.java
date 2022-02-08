@@ -1,7 +1,7 @@
 package org.acme.data.provider;
 
 import io.smallrye.mutiny.Multi;
-import open.telemetry.demo.PokemonSighting;
+import message.PokemonSighting;
 import org.acme.data.provider.util.DataGeneratorUtil;
 import org.eclipse.microprofile.reactive.messaging.Message;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;

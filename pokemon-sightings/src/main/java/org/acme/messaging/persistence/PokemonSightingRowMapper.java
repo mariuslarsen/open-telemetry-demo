@@ -1,7 +1,6 @@
 package org.acme.messaging.persistence;
 
-import com.google.protobuf.Timestamp;
-import open.telemetry.demo.PokemonSighting;
+import message.PokemonSighting;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 
@@ -15,11 +14,6 @@ public class PokemonSightingRowMapper implements RowMapper<PokemonSighting> {
         String name = rs.getString("name");
         String location = rs.getString("location");
         Instant instant = rs.getTimestamp("sighted_at").toInstant();
-        return PokemonSighting.newBuilder()
-                .setName(name)
-                .setLocation(location)
-                .setTimestamp(Timestamp.newBuilder()
-                        .setSeconds(instant.getEpochSecond())
-                        .setNanos(instant.getNano())).build();
+        return new PokemonSighting(name, location, instant);
     }
 }
