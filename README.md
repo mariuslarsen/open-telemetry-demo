@@ -2,7 +2,7 @@
 Distributed tracing demo with OpenTelemetry.
 
 The project consists of a [data provider](data-provider) which generates random data using the [Datafaker](https://www.datafaker.net/)
-library. The data is then wrapped in a proto message before being published to a Kafka topic every 2 seconds.
+library before being publishing to a Kafka topic every 2 seconds.
 Topics are then consumed by the [receiver](pokemon-sightings), persisted, and logged to the console.
 
 There are also a couple of REST endpoints for retrieving stored Pokémon sightings from the database.
